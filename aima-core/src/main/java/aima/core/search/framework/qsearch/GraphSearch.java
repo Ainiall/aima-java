@@ -78,7 +78,16 @@ public class GraphSearch<S, A> extends TreeSearch<S, A> {
 	protected void addToFrontier(Node<S, A> node) {
 		// new state or existing state with better path
 		if (!reached.containsKey(node.getState()) || 
-				node.getPathCost() < reached.get(node.getState()).getPathCost() ) {
+				node.getPathCost() < reached.get(node.getState()).getPathCost()) {
+			// nodes expanded reinserted in frontier
+			if(explored.contains(node.getState())) {
+				explored.remove(node.getState()); // explore new path
+				metrics.incrementInt(METRIC_NODES_EXPANDED_REINSERTED_IN_FRONTIER);
+			} else {
+				// nodes duplicated in frontier
+				metrics.incrementInt(METRIC_NODES_DUPLICATED_IN_FRONTIER);
+			}
+					
 			frontier.add(node);
 			updateMetrics(frontier.size());
 			reached.put(node.getState(), node);
