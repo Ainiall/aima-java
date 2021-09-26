@@ -29,7 +29,8 @@ import aima.core.util.Tasks;
  * {@link #findNode(Problem, Queue)} from superclass {@link QueueSearch}.
  *
  * @param <S> The type used to represent states
- * @param <A> The type of the actions to be used to navigate through the state space
+ * @param <A> The type of the actions to be used to navigate through the state
+ *            space
  *
  * @author Ruediger Lunde
  * @author Ravi Mohan
@@ -47,19 +48,18 @@ public class TreeSearch<S, A> extends QueueSearch<S, A> {
 	}
 
 	/**
-	 * Receives a problem and a queue implementing the search strategy and
-	 * computes a node referencing a goal state, if such a state was found.
-	 * This template method provides a base for tree and graph search
-	 * implementations. It can be customized by overriding some primitive
-	 * operations, especially {@link #addToFrontier(Node)},
-	 * {@link #removeFromFrontier()}, and {@link #isFrontierEmpty()}.
+	 * Receives a problem and a queue implementing the search strategy and computes
+	 * a node referencing a goal state, if such a state was found. This template
+	 * method provides a base for tree and graph search implementations. It can be
+	 * customized by overriding some primitive operations, especially
+	 * {@link #addToFrontier(Node)}, {@link #removeFromFrontier()}, and
+	 * {@link #isFrontierEmpty()}.
 	 *
-	 * @param problem
-	 *            the search problem
-	 * @param frontier
-	 *            the data structure for nodes that are waiting to be expanded
+	 * @param problem  the search problem
+	 * @param frontier the data structure for nodes that are waiting to be expanded
 	 *
-	 * @return a node referencing a goal state, if the goal was found, otherwise empty;
+	 * @return a node referencing a goal state, if the goal was found, otherwise
+	 *         empty;
 	 */
 	@Override
 	public Optional<Node<S, A>> findNode(Problem<S, A> problem, Queue<Node<S, A>> frontier) {
@@ -74,6 +74,11 @@ public class TreeSearch<S, A> extends QueueSearch<S, A> {
 		while (!isFrontierEmpty() && !Tasks.currIsCancelled()) {
 			// choose a leaf node and remove it from the frontier
 			Node<S, A> node = removeFromFrontier();
+			// f(n) print
+			if (evalFn != null) {
+				System.out.println("f(\n" + node.getState() + ") = " + evalFn.applyAsDouble(node));
+			}
+
 			// if the node contains a goal state then return the corresponding solution
 			if (!earlyGoalTest && problem.testSolution(node))
 				return asOptional(node);
@@ -98,7 +103,8 @@ public class TreeSearch<S, A> extends QueueSearch<S, A> {
 	}
 
 	/**
-	 * Primitive operation which removes and returns the node at the head of the frontier.
+	 * Primitive operation which removes and returns the node at the head of the
+	 * frontier.
 	 *
 	 * @return the node at the head of the frontier.
 	 */
@@ -109,7 +115,8 @@ public class TreeSearch<S, A> extends QueueSearch<S, A> {
 	}
 
 	/**
-	 * Primitive operation which checks whether the frontier contains not yet expanded nodes.
+	 * Primitive operation which checks whether the frontier contains not yet
+	 * expanded nodes.
 	 */
 	protected boolean isFrontierEmpty() {
 		return frontier.isEmpty();

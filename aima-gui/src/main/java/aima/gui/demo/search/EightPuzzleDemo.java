@@ -117,7 +117,7 @@ public class EightPuzzleDemo {
 	private static void eightPuzzleAStarDemo() {
 		System.out.println("\nEightPuzzleDemo AStar Search (MisplacedTileHeursitic)");
 		try {
-			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith30MovesSolution1);
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith5MovesSolution1);
 			// h1 heuristic getNumberOfMisplacedTiles  h2 heuristic getManhattanDistance
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
 					EightPuzzleFunctions::getNumberOfMisplacedTiles);
@@ -147,7 +147,7 @@ public class EightPuzzleDemo {
 	private static void eightPuzzleAStarManhattanDemo() {
 		System.out.println("\nEightPuzzleDemo AStar Search (ManhattanHeursitic)");
 		try {
-			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith30MovesSolution1);
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith5MovesSolution1);
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
 					EightPuzzleFunctions::getManhattanDistance);
 			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
@@ -164,5 +164,6 @@ public class EightPuzzleDemo {
 
 	private static void printActions(List<Action> actions) {
 		actions.forEach(System.out::println);
+		System.out.println("TOTAL ACTIONS: " + actions.size());
 	}
 }
