@@ -1,5 +1,6 @@
 package aima.core.search.framework.qsearch;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Queue;
@@ -48,6 +49,7 @@ import aima.core.search.framework.problem.Problem;
 public class GraphSearch<S, A> extends TreeSearch<S, A> {
 
 	private Set<S> explored = new HashSet<>();
+	private HashMap<S, Node<S, A>> reached = new HashMap<>(); //frontier
 
 	public GraphSearch() {
 		this(new NodeFactory<>());
@@ -74,9 +76,12 @@ public class GraphSearch<S, A> extends TreeSearch<S, A> {
 	 */
 	@Override
 	protected void addToFrontier(Node<S, A> node) {
-		if (!explored.contains(node.getState())) {
+		// new state or existing state with better path
+		if (!reached.containsKey(node.getState()) || 
+				node.getPathCost() < reached.get(node.getState()).getPathCost() ) {
 			frontier.add(node);
 			updateMetrics(frontier.size());
+			reached.put(node.getState(), node);
 		}
 	}
 
@@ -113,7 +118,10 @@ public class GraphSearch<S, A> extends TreeSearch<S, A> {
 	 * of the frontier.
 	 */
 	private void cleanUpFrontier() {
-		while (!frontier.isEmpty() && explored.contains(frontier.element().getState()))
+		while (!frontier.isEmpty() && 
+				(frontier.element().getPathCost() > 
+						reached.get(frontier.element().getState()).getPathCost())) {
 			frontier.remove();
+		}
 	}
 }
