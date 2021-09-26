@@ -33,13 +33,13 @@ public class EightPuzzleDemo {
 
 	public static void main(String[] args) {
 		System.out.println("Initial State:\n" + boardWithThreeMoveSolution);
-		eightPuzzleDLSDemo();
-		eightPuzzleIDLSDemo();
-		eightPuzzleGreedyBestFirstDemo();
-		eightPuzzleGreedyBestFirstManhattanDemo();
+		//eightPuzzleDLSDemo();
+		//eightPuzzleIDLSDemo();
+		//eightPuzzleGreedyBestFirstDemo();
+		//eightPuzzleGreedyBestFirstManhattanDemo();
 		eightPuzzleAStarDemo();
-		eightPuzzleAStarManhattanDemo();
-		eightPuzzleSimulatedAnnealingDemo();
+		//eightPuzzleAStarManhattanDemo();
+		//eightPuzzleSimulatedAnnealingDemo();
 	}
 
 	private static void eightPuzzleDLSDemo() {
@@ -101,6 +101,7 @@ public class EightPuzzleDemo {
 		System.out.println("\nEightPuzzleDemo AStar Search (MisplacedTileHeursitic)");
 		try {
 			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(random1);
+			// h1 heuristic getNumberOfMisplacedTiles
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>
 					(new GraphSearch<>(), EightPuzzleFunctions::getNumberOfMisplacedTiles);
 			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);

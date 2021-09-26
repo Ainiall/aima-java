@@ -10,15 +10,16 @@ import java.util.stream.Stream;
 
 /**
  * Useful functions for solving EightPuzzle problems.
+ * 
  * @author Ruediger Lunde
  */
 public class EightPuzzleFunctions {
 
-	public static final EightPuzzleBoard GOAL_STATE = new EightPuzzleBoard(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+	public static final EightPuzzleBoard GOAL_STATE = new EightPuzzleBoard(new int[] { 1, 2, 3, 8, 0, 4, 7, 6, 5 });
 
 	public static List<Action> getActions(EightPuzzleBoard state) {
-		return Stream.of(EightPuzzleBoard.UP, EightPuzzleBoard.DOWN, EightPuzzleBoard.LEFT, EightPuzzleBoard.RIGHT).
-				filter(state::canMoveGap).collect(Collectors.toList());
+		return Stream.of(EightPuzzleBoard.UP, EightPuzzleBoard.DOWN, EightPuzzleBoard.LEFT, EightPuzzleBoard.RIGHT)
+				.filter(state::canMoveGap).collect(Collectors.toList());
 	}
 
 	public static EightPuzzleBoard getResult(EightPuzzleBoard state, Action action) {
