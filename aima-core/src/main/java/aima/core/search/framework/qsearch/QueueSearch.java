@@ -32,6 +32,8 @@ public abstract class QueueSearch<S, A> {
 	public static final String METRIC_NODES_EXPANDED_REINSERTED_IN_FRONTIER = "pathCost";
 	public static final String METRIC_NODES_DUPLICATED_IN_FRONTIER = "pathCost";
 
+	public static final String METRIC_TIME_TAKEN = "ms";
+
 	final protected NodeFactory<S, A> nodeFactory;
 	protected boolean earlyGoalTest = false;
 	protected Metrics metrics = new Metrics();

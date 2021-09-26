@@ -91,6 +91,7 @@ public class TreeSearch<S, A> extends QueueSearch<S, A> {
 			}
 		}
 		// if the frontier is empty then return failure
+		metrics.set(METRIC_TIME_TAKEN, System.currentTimeMillis());
 		return Optional.empty();
 	}
 
