@@ -44,8 +44,8 @@ public class EightPuzzleFunctions {
 		for (int val = 1; val <= 8; val++) {
 			XYLocation locCurr = currState.getLocationOf(val);
 			XYLocation locGoal = GOAL_STATE.getLocationOf(val);
-			result += Math.abs(locGoal.getX() - locCurr.getX());
-			result += Math.abs(locGoal.getY() - locCurr.getY());
+			result += Math.pow(2, val) * Math.abs(locGoal.getX() - locCurr.getX());
+			result += Math.pow(2, val) * Math.abs(locGoal.getY() - locCurr.getY());
 		}
 		return result;
 	}
@@ -55,7 +55,20 @@ public class EightPuzzleFunctions {
 		int result = 0;
 		for (int val = 1; val <= 8; val++)
 			if (!(currState.getLocationOf(val).equals(GOAL_STATE.getLocationOf(val))))
-				result++;
+				result += Math.pow(2, val);
 		return result;
 	}
+
+	public static double stepCostFunction(EightPuzzleBoard s1, Action a, EightPuzzleBoard s2) {
+		int val = 0;
+		int i = 0;
+		while (i < 8 && s2.getState()[i] != 0) {
+			i++;
+		}
+		val = s1.getState()[i];
+		return (long) Math.pow(2, val);
+	}
+
+
+	
 }

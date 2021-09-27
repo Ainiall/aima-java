@@ -48,7 +48,7 @@ import aima.core.search.framework.problem.Problem;
  */
 public class GraphSearch<S, A> extends TreeSearch<S, A> {
 
-	private Set<S> explored = new HashSet<>();
+	private Set<S> explored = new HashSet<>(); //expanded
 	private HashMap<S, Node<S, A>> reached = new HashMap<>(); //frontier
 
 	public GraphSearch() {
@@ -81,13 +81,12 @@ public class GraphSearch<S, A> extends TreeSearch<S, A> {
 				node.getPathCost() < reached.get(node.getState()).getPathCost()) {
 			// nodes expanded reinserted in frontier
 			if(explored.contains(node.getState())) {
-				explored.remove(node.getState()); // explore new path
 				metrics.incrementInt(METRIC_NODES_EXPANDED_REINSERTED_IN_FRONTIER);
-			} else {
+			} else if(reached.containsKey(node.getState())){
 				// nodes duplicated in frontier
 				metrics.incrementInt(METRIC_NODES_DUPLICATED_IN_FRONTIER);
 			}
-					
+			
 			frontier.add(node);
 			updateMetrics(frontier.size());
 			reached.put(node.getState(), node);
