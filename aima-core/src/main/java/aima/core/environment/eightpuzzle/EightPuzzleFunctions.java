@@ -69,6 +69,8 @@ public class EightPuzzleFunctions {
 		return (long) Math.pow(2, val);
 	}
 
-
+	public static int getNullHeuristic(Node<EightPuzzleBoard, Action> node) {
+		return 0;
+	}
 	
 }

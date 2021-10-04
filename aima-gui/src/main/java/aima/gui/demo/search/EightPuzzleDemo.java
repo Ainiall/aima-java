@@ -50,12 +50,15 @@ public class EightPuzzleDemo {
 		new int[] {5, 6, 7, 2, 8, 4, 0, 3, 1});
 	public static void main(String[] args) {
 		System.out.println("Initial State:\n" + boardWithThreeMoveSolution);
+
 		// eightPuzzleDLSDemo();
 		// eightPuzzleIDLSDemo();
-		// eightPuzzleGreedyBestFirstDemo();
-		// eightPuzzleGreedyBestFirstManhattanDemo();
-		eightPuzzleAStarDemo();
-		eightPuzzleAStarManhattanDemo();
+		// eightPuzzleGreedyBestFirstDemo();			
+		// eightPuzzleGreedyBestFirstManhattanDemo();	
+		eightPuzzleNullHeuristic();							//h0
+		eightPuzzleAStarDemo();								//h1
+		eightPuzzleAStarManhattanDemo();					//h2
+		// eightPuzzleNonWeigthedConsistentHeuristic();						
 		// eightPuzzleSimulatedAnnealingDemo();
 	}
 
@@ -114,10 +117,24 @@ public class EightPuzzleDemo {
 
 	}
 
+	private static void eightPuzzleNullHeuristic() {
+		System.out.println("\nEightPuzzleDemo AStar Search (NullHeursitic)");
+		try {
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
+			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
+					EightPuzzleFunctions::getNullHeuristic);
+			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
+			printActions(agent.getActions());
+			printInstrumentation(agent.getInstrumentation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private static void eightPuzzleAStarDemo() {
 		System.out.println("\nEightPuzzleDemo AStar Search (MisplacedTileHeursitic)");
 		try {
-			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith5MovesSolution1);
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
 			// h1 heuristic getNumberOfMisplacedTiles  h2 heuristic getManhattanDistance
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
 					EightPuzzleFunctions::getNumberOfMisplacedTiles);
@@ -147,9 +164,23 @@ public class EightPuzzleDemo {
 	private static void eightPuzzleAStarManhattanDemo() {
 		System.out.println("\nEightPuzzleDemo AStar Search (ManhattanHeursitic)");
 		try {
-			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith5MovesSolution1);
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
 					EightPuzzleFunctions::getManhattanDistance);
+			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
+			printActions(agent.getActions());
+			printInstrumentation(agent.getInstrumentation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void eightPuzzleNonWeigthedConsistentHeuristic() {
+		System.out.println("\nEightPuzzleDemo AStar Search (Non weighted consistent heuristic)");
+		try {
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
+			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
+					EightPuzzleFunctions::getConsistentHeuristic);
 			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
 			printActions(agent.getActions());
 			printInstrumentation(agent.getInstrumentation());
