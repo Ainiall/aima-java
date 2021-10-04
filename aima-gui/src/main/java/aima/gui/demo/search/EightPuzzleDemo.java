@@ -55,10 +55,12 @@ public class EightPuzzleDemo {
 		// eightPuzzleIDLSDemo();
 		// eightPuzzleGreedyBestFirstDemo();			
 		// eightPuzzleGreedyBestFirstManhattanDemo();	
-		eightPuzzleNullHeuristic();							//h0
+		/*
+		eightPuzzleNullHeuristic(); //h0
 		eightPuzzleAStarDemo();								//h1
 		eightPuzzleAStarManhattanDemo();					//h2
-		// eightPuzzleNonWeigthedConsistentHeuristic();						
+		*/
+		eightPuzzleNonWeigthedConsistentHeuristic();		//h3				
 		// eightPuzzleSimulatedAnnealingDemo();
 	}
 

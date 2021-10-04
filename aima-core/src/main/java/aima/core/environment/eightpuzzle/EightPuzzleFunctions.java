@@ -72,5 +72,18 @@ public class EightPuzzleFunctions {
 	public static int getNullHeuristic(Node<EightPuzzleBoard, Action> node) {
 		return 0;
 	}
-	
+
+	public static int getConsistentHeuristic(Node<EightPuzzleBoard, Action> node) {
+		EightPuzzleBoard currState = node.getState();
+		int result = 0;
+		for (int val = 1; val <= 8; val++) {
+			XYLocation locCurr = currState.getLocationOf(val);
+			XYLocation locGoal = GOAL_STATE.getLocationOf(val);
+			int distance = Math.abs(locGoal.getX() - locCurr.getX())+
+					Math.abs(locGoal.getY() - locCurr.getY());
+			if (distance == 2)
+				result += distance * Math.pow(2, val);
+		}
+		return result;
+	}
 }
