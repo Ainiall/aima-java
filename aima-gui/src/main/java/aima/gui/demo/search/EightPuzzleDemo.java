@@ -55,12 +55,14 @@ public class EightPuzzleDemo {
 		// eightPuzzleIDLSDemo();
 		// eightPuzzleGreedyBestFirstDemo();			
 		// eightPuzzleGreedyBestFirstManhattanDemo();	
+
 		/*
 		eightPuzzleNullHeuristic(); //h0
 		eightPuzzleAStarDemo();								//h1
 		eightPuzzleAStarManhattanDemo();					//h2
+		eightPuzzleNonWeigthedConsistentHeuristic(); 		//h3
 		*/
-		eightPuzzleNonWeigthedConsistentHeuristic();		//h3				
+		eightPuzzlePEAStarManhattanDemo();					//Epsilon + h2
 		// eightPuzzleSimulatedAnnealingDemo();
 	}
 
@@ -134,7 +136,7 @@ public class EightPuzzleDemo {
 	}
 
 	private static void eightPuzzleAStarDemo() {
-		System.out.println("\nEightPuzzleDemo AStar Search (MisplacedTileHeursitic)");
+		System.out.println("\nEightPuzzleDemo AStar Search (MisplacedTileHeursitic Weigthed)");
 		try {
 			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
 			// h1 heuristic getNumberOfMisplacedTiles  h2 heuristic getManhattanDistance
@@ -164,7 +166,7 @@ public class EightPuzzleDemo {
 	}
 
 	private static void eightPuzzleAStarManhattanDemo() {
-		System.out.println("\nEightPuzzleDemo AStar Search (ManhattanHeursitic)");
+		System.out.println("\nEightPuzzleDemo AStar Search (ManhattanHeursitic Weigthed)");
 		try {
 			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
@@ -183,6 +185,20 @@ public class EightPuzzleDemo {
 			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
 			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
 					EightPuzzleFunctions::getConsistentHeuristic);
+			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
+			printActions(agent.getActions());
+			printInstrumentation(agent.getInstrumentation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void eightPuzzlePEAStarManhattanDemo() {
+		System.out.println("\nEightPuzzleDemo AStar Search (ManhattanHeursitic Epsilon Weighted)");
+		try {
+			Problem<EightPuzzleBoard, Action> problem = new BidirectionalEightPuzzleProblem(boardWith10MovesSolution1);
+			SearchForActions<EightPuzzleBoard, Action> search = new AStarSearch<>(new GraphSearch<>(),
+				EightPuzzleFunctions::getEpsilonWeightedManhattanDistance);
 			SearchAgent<Object, EightPuzzleBoard, Action> agent = new SearchAgent<>(problem, search);
 			printActions(agent.getActions());
 			printInstrumentation(agent.getInstrumentation());
