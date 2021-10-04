@@ -17,7 +17,7 @@ public class NQueensBoard {
 
 	/** Parameters for initialization. */
 	public enum Config {
-		EMPTY, QUEENS_IN_FIRST_ROW, QUEEN_IN_EVERY_COL
+		EMPTY, QUEENS_IN_FIRST_ROW, QUEEN_IN_EVERY_COL, QUEENS_DIFF_ROW_COL
 	}
 
 	/**
@@ -50,13 +50,28 @@ public class NQueensBoard {
 	 */
 	public NQueensBoard(int size, Config config) {
 		this(size);
+		Random r = new Random();
 		if (config == Config.QUEENS_IN_FIRST_ROW) {
 			for (int col = 0; col < size; col++)
 				addQueenAt(new XYLocation(col, 0));
 		} else if (config == Config.QUEEN_IN_EVERY_COL) {
-			Random r = new Random();
 			for (int col = 0; col < size; col++)
 				addQueenAt(new XYLocation(col, r.nextInt(size)));
+		} else if (config == Config.QUEENS_DIFF_ROW_COL) {
+			List<Integer> reinaFila = new ArrayList<Integer>();
+			for(int i = 0; i<size; i++) 
+				reinaFila.add(i);
+		
+			for (int col = 0; col < size; col++) {
+				//voy sacando valores aleatoriamente para colocar la fila, asegurando que es consistente
+				//en reinaFila guardo las posiciones posibles, asi nunca se repetiran
+				int row = r.nextInt(reinaFila.size());
+				addQueenAt(new XYLocation(col, reinaFila.get(row)));
+				reinaFila.remove(row);
+			
+
+			}
+				
 		}
 	}
 
