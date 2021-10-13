@@ -57,11 +57,12 @@ public class EightPuzzleDemo {
 		// eightPuzzleGreedyBestFirstManhattanDemo();	
 
 		/*
-		eightPuzzleNullHeuristic(); //h0
+		eightPuzzleNullHeuristic(); 						//h0
 		eightPuzzleAStarDemo();								//h1
 		eightPuzzleAStarManhattanDemo();					//h2
 		eightPuzzleNonWeigthedConsistentHeuristic(); 		//h3
 		*/
+
 		eightPuzzlePEAStarManhattanDemo();					//Epsilon + h2
 		// eightPuzzleSimulatedAnnealingDemo();
 	}

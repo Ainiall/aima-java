@@ -21,15 +21,15 @@ public class NQueensBoard {
 	}
 
 	/**
-	 * X (first index, col) increases left to right with zero based index,
-	 * Y (second index, row) increases top to bottom with zero based index.
-	 * A queen at position (x, y) is indicated by value true.
+	 * X (first index, col) increases left to right with zero based index, Y (second
+	 * index, row) increases top to bottom with zero based index. A queen at
+	 * position (x, y) is indicated by value true.
 	 */
 	private boolean[][] squares;
 
 	/**
-	 * Creates a board with <code>size</code> rows and size columns. Column and
-	 * row indices start with 0.
+	 * Creates a board with <code>size</code> rows and size columns. Column and row
+	 * indices start with 0.
 	 */
 	public NQueensBoard(int size) {
 		squares = new boolean[size][size];
@@ -41,12 +41,11 @@ public class NQueensBoard {
 	}
 
 	/**
-	 * Creates a board with <code>size</code> rows and size columns. Column and
-	 * row indices start with 0.
+	 * Creates a board with <code>size</code> rows and size columns. Column and row
+	 * indices start with 0.
 	 * 
-	 * @param config
-	 *            Controls whether the board is initially empty or contains some
-	 *            queens.
+	 * @param config Controls whether the board is initially empty or contains some
+	 *               queens.
 	 */
 	public NQueensBoard(int size, Config config) {
 		this(size);
@@ -58,20 +57,16 @@ public class NQueensBoard {
 			for (int col = 0; col < size; col++)
 				addQueenAt(new XYLocation(col, r.nextInt(size)));
 		} else if (config == Config.QUEENS_DIFF_ROW_COL) {
-			List<Integer> reinaFila = new ArrayList<Integer>();
-			for(int i = 0; i<size; i++) 
-				reinaFila.add(i);
-		
-			for (int col = 0; col < size; col++) {
-				//voy sacando valores aleatoriamente para colocar la fila, asegurando que es consistente
-				//en reinaFila guardo las posiciones posibles, asi nunca se repetiran
-				int row = r.nextInt(reinaFila.size());
-				addQueenAt(new XYLocation(col, reinaFila.get(row)));
-				reinaFila.remove(row);
-			
+			List<Integer> queenRow = new ArrayList<Integer>();
+			for (int i = 0; i < size; i++)
+				queenRow.add(i);
 
+			for (int col = 0; col < size; col++) {
+				int row = r.nextInt(queenRow.size());
+				addQueenAt(new XYLocation(col, queenRow.get(row)));
+				queenRow.remove(row);
 			}
-				
+
 		}
 	}
 
@@ -102,8 +97,8 @@ public class NQueensBoard {
 	}
 
 	/**
-	 * Moves the queen in the specified column (x-value of <code>l</code>) to
-	 * the specified row (y-value of <code>l</code>). The action assumes a
+	 * Moves the queen in the specified column (x-value of <code>l</code>) to the
+	 * specified row (y-value of <code>l</code>). The action assumes a
 	 * complete-state formulation of the n-queens problem.
 	 */
 	public void moveQueenTo(XYLocation l) {
@@ -152,6 +147,79 @@ public class NQueensBoard {
 
 	public int getNumberOfAttackingPairs() {
 		return getQueenPositions().stream().mapToInt(this::getNumberOfAttacksOn).sum() / 2;
+	}
+
+	public int getNumberOfAttackedQueens() {
+		List<XYLocation> queens = getQueenPositions();
+		int attacked = 0;
+		for (XYLocation queen : queens) {
+			if (isSquareUnderAttack(queen)) {
+				attacked += 1;
+			}
+		}
+		return attacked;
+	}
+
+	public int getMaxAllignedQueens() {
+		int maxRowQueens = getMaxHorizontalAllignedQueens();
+		int maxColQueens = getMaxVerticalAllignedQueens();
+		int maxDiagonalQueens = getMaxDiagonalAllignedQueens();
+
+		return Math.max(maxRowQueens, Math.max(maxColQueens, maxDiagonalQueens));
+	}
+
+	public int getMaxHorizontalAllignedQueens() {
+		int maxRowQueens = 0;
+		for (int row = 0; row < getSize(); row++) {
+			int rowCount = 0;
+			for (int col = 0; col < getSize(); col++) {
+				if (queenExistsAt(row, col)) {
+					rowCount++;
+				}
+			}
+			maxRowQueens = Math.max(maxRowQueens, rowCount);
+		}
+		return maxRowQueens;
+	}
+
+	public int getMaxVerticalAllignedQueens() {
+		int maxColQueens = 0;
+		for (int col = 0; col < getSize(); col++) {
+			int colCount = 0;
+			for (int row = 0; row < getSize(); row++) {
+				if (queenExistsAt(row, col)) {
+					colCount++;
+				}
+			}
+			maxColQueens = Math.max(maxColQueens, colCount);
+		}
+		return maxColQueens;
+	}
+
+	public int getMaxDiagonalAllignedQueens() {
+		boolean[][] copy = new boolean[getSize()][getSize() * 2];
+		// simplify diagonal
+		for (int row = 0; row < getSize(); row++) {
+			for (int col = 0; col < getSize(); col++) {
+				// original
+				copy[row][col] = squares[row][col];
+				// copy
+				copy[row][col + getSize()] = squares[row][col];
+			}
+		}
+
+		int maxDiagonalQueens = 0;	
+		for (int col = 0; col < getSize(); col++) {
+			int diagonalCount = 0;
+			for (int diagonal = 0; diagonal < getSize(); diagonal++) {
+				if (copy[diagonal][col + diagonal]) {
+					diagonalCount++;
+				}
+			}
+			maxDiagonalQueens = Math.max(maxDiagonalQueens, diagonalCount);
+		}
+		
+		return maxDiagonalQueens;
 	}
 
 	public int getNumberOfAttacksOn(XYLocation l) {

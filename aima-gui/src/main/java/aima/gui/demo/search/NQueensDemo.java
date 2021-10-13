@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 
 public class NQueensDemo {
 
-	private static final int boardSize = 8; // 16, 24, 32
+	private static final int boardSize = 32; // 16, 24, 32
 
 	public static void main(String[] args) {
 		startNQueensDemo();
@@ -38,11 +38,35 @@ public class NQueensDemo {
 	private static void startNQueensDemo() {
 		// solveNQueensWithDepthFirstSearch();
 		// solveNQueensWithBreadthFirstSearch();
+		
+		/*
 		solveNQueensWithAStarSearchNullHeuristicIncremental();
 		solveNQueensWithAStarSearchNullHeuristicComplete1();
 		solveNQueensWithAStarSearchNullHeuristicComplete2();
 		solveNQueensWithAStarSearchNullHeuristicComplete3();
-		//solveNQueensWithAStarSearch();
+		*/
+		
+		/* ATTACKING PAIRS
+		solveNQueensWithAStarSearchIncremental(); // no need
+		solveNQueensWithAStarSearchComplete1();
+		solveNQueensWithAStarSearchComplete2();
+		solveNQueensWithAStarSearchComplete3();
+		*/
+
+		/* ATTACKED QUEENS
+		solveNQueensWithAStarSearchAttackedIncremental(); // no need
+		solveNQueensWithAStarSearchAttackedComplete1();
+		solveNQueensWithAStarSearchAttackedComplete2();
+		solveNQueensWithAStarSearchAttackedComplete3();
+		*/
+
+		// ALIGNED QUEENS -1
+		solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
+		solveNQueensWithAStarSearchAttackedComplete1();
+		solveNQueensWithAStarSearchAttackedComplete2();
+		solveNQueensWithAStarSearchAttackedComplete3();
+		
+
 		// solveNQueensWithAStarSearch4e();
 		// solveNQueensWithRecursiveDLS();
 		// solveNQueensWithIterativeDeepeningSearch();
@@ -111,8 +135,8 @@ public class NQueensDemo {
 	
 	private static void solveNQueensWithAStarSearchNullHeuristicComplete3() {
 		System.out.println("\n--- NQueensDemo A* (NullHeuristic complete 3) ---");
-		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem
-				(boardSize, Config.QUEENS_DIFF_ROW_COL);
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_DIFF_ROW_COL);
 		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
 				NQueensFunctions::getNullHeuristic);
 		Optional<List<QueenAction>> actions = search.findActions(problem);
@@ -121,14 +145,154 @@ public class NQueensDemo {
 		System.out.println(search.getMetrics());
 	}
 	
-	private static void solveNQueensWithAStarSearch() {
+	
+	private static void solveNQueensWithAStarSearchAttackedIncremental() {
 		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
 
-		// createIncrementalFormulationProblem(boardSize) EMPTY
-		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem
-				(boardSize, Config.QUEENS_IN_FIRST_ROW);
-		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>
-				(new GraphSearch<>(), NQueensFunctions::getNumberOfAttackingPairs);
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createIncrementalFormulationProblem(boardSize);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackedQueens);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchAttackedComplete1() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_IN_FIRST_ROW);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackedQueens);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchAttackedComplete2() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEEN_IN_EVERY_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackedQueens);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchAttackedComplete3() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_DIFF_ROW_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackedQueens);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+
+	private static void solveNQueensWithAStarSearchIncremental() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createIncrementalFormulationProblem(boardSize);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackingPairs);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchComplete1() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_IN_FIRST_ROW);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackingPairs);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchComplete2() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEEN_IN_EVERY_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackingPairs);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchComplete3() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_DIFF_ROW_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getNumberOfAttackingPairs);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+
+	private static void solveNQueensWithAStarSearchMaxAlignedIncremental() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createIncrementalFormulationProblem(boardSize);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getMaximumNumberOfQueensAlignedMinusOne);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchMaxAllignedComplete1() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_IN_FIRST_ROW);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getMaximumNumberOfQueensAlignedMinusOne);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchMaxAllignedComplete2() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEEN_IN_EVERY_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getMaximumNumberOfQueensAlignedMinusOne);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+	
+	private static void solveNQueensWithAStarSearchMaxAllignedComplete3() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createCompleteStateFormulationProblem(boardSize,
+				Config.QUEENS_DIFF_ROW_COL);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getMaximumNumberOfQueensAlignedMinusOne);
 		Optional<List<QueenAction>> actions = search.findActions(problem);
 
 		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
@@ -214,8 +378,8 @@ public class NQueensDemo {
 
 		// Run for a set amount of time
 		Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 1000L);
-		System.out.println("Max time 1 second, Best Individual:\n"
-				+ NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
+		System.out.println(
+				"Max time 1 second, Best Individual:\n" + NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
 		System.out.println("Board Size      = " + boardSize);
 		System.out.println("# Board Layouts = " + (new BigDecimal(boardSize)).pow(boardSize));
 		System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
@@ -227,8 +391,8 @@ public class NQueensDemo {
 		// Run till goal is achieved
 		bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);
 		System.out.println("");
-		System.out.println("Max time unlimited, Best Individual:\n" +
-				NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
+		System.out.println(
+				"Max time unlimited, Best Individual:\n" + NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
 		System.out.println("Board Size      = " + boardSize);
 		System.out.println("# Board Layouts = " + (new BigDecimal(boardSize)).pow(boardSize));
 		System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
@@ -238,6 +402,37 @@ public class NQueensDemo {
 		System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
 	}
 
+	private static void solveNQueensWithGeneticAlgorithmSearchNumberGenerations() {
+		System.out.println("\n--- NQueensDemo GeneticAlgorithm ---");
+		final int popSize = 50;
+		final double mutationProbability = 0.15;
+		final int numberOfGenerations = 100;
+		FitnessFunction<Integer> fitnessFunction = NQueensGenAlgoUtil.getFitnessFunction();
+		Predicate<Individual<Integer>> goalTest = NQueensGenAlgoUtil.getGoalTest();
+		// Generate an initial population
+		Set<Individual<Integer>> population = new HashSet<>();
+		for (int i = 0; i < popSize; i++)
+			population.add(NQueensGenAlgoUtil.generateRandomIndividual(boardSize));
+
+		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(boardSize,
+				NQueensGenAlgoUtil.getFiniteAlphabetForBoardOfSize(boardSize), mutationProbability);
+
+		Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, numberOfGenerations);
+
+		// Run till goal is achieved
+		bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);
+		System.out.println("");
+		System.out.println(
+				"Max time unlimited, Best Individual:\n" + NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
+		System.out.println("Board Size      = " + boardSize);
+		System.out.println("# Board Layouts = " + (new BigDecimal(boardSize)).pow(boardSize));
+		System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
+		System.out.println("Is Goal         = " + goalTest.test(bestIndividual));
+		System.out.println("Population Size = " + ga.getPopulationSize());
+		System.out.println("Itertions       = " + ga.getIterations());
+		System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+	}
+	
 	// Here, this trivial algorithm outperforms the genetic search approach as described in the textbook!
 	private static void solveNQueensWithRandomWalk() {
 		System.out.println("\n--- NQueensDemo RandomWalk ---");

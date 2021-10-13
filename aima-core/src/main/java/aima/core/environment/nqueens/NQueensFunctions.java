@@ -104,4 +104,14 @@ public class NQueensFunctions {
     public static double getNullHeuristic(Node<NQueensBoard, QueenAction> node) {
         return 0;
     }
+
+    public static double getNumberOfAttackedQueens(Node<NQueensBoard, QueenAction> node) {
+        return node.getState().getNumberOfAttackedQueens();
+    }
+
+    public static double getMaximumNumberOfQueensAlignedMinusOne(Node<NQueensBoard, QueenAction> node) {
+        // h(n) = X(n)-1, where X(n) it's max alligned queens in a row, col or diagonal
+        return node.getState().getMaxAllignedQueens() -1;
+    }
+
 }
