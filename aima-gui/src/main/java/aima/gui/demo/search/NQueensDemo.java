@@ -60,13 +60,15 @@ public class NQueensDemo {
 		solveNQueensWithAStarSearchAttackedComplete3();
 		*/
 
-		// ALIGNED QUEENS -1
-		//solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
-		//solveNQueensWithAStarSearchAttackedComplete1();
-		//solveNQueensWithAStarSearchAttackedComplete2();
-		//solveNQueensWithAStarSearchAttackedComplete3();
-		
-		solveNQueensWithAStarSearchProbabilisticEstimation();
+		/* ALIGNED QUEENS -1
+		solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
+		solveNQueensWithAStarSearchAttackedComplete1();
+		solveNQueensWithAStarSearchAttackedComplete2();
+		solveNQueensWithAStarSearchAttackedComplete3();
+		*/
+
+		// ESTIMATION
+		//solveNQueensWithAStarSearchProbabilisticEstimation();
 
 
 		// solveNQueensWithAStarSearch4e();
@@ -74,8 +76,10 @@ public class NQueensDemo {
 		// solveNQueensWithIterativeDeepeningSearch();
 		// solveNQueensWithSimulatedAnnealingSearch();
 		// solveNQueensWithHillClimbingSearch();
-		// solveNQueensWithGeneticAlgorithmSearch();
+		//solveNQueensWithGeneticAlgorithmSearch();
 		// solveNQueensWithRandomWalk();
+
+		solveNQueensWithGeneticAlgorithmSearchNumberGenerations();
 	}
 
 	private static void solveNQueensWithDepthFirstSearch() {

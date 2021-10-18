@@ -6,6 +6,7 @@ import aima.core.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -128,6 +129,10 @@ public class GeneticAlgorithm<A> {
 		updateMetrics(population, 0, 0L);
 
 		long startTime = System.currentTimeMillis();
+
+
+		System.out.println("Average fitness: " + averageFitness(population, fitnessFn) + "\tBest fitness: "
+		+ bestFitness(population, fitnessFn));
 
 		// repeat
 		int itCount = 0;
@@ -340,4 +345,23 @@ public class GeneticAlgorithm<A> {
 	public interface ProgressTracker<A> {
 		void trackProgress(int itCount, Collection<Individual<A>> population);
 	}
+
+	private double averageFitness(List<Individual<A>> population, FitnessFunction<A> fitnessFn) {
+		double totalFn = 0.0;
+		for (Individual<A> individual : population) {
+			totalFn+=fitnessFn.apply(individual);
+		}
+		return totalFn/population.size();
+    }
+
+	private double bestFitness(List<Individual<A>> population, FitnessFunction<A> fitnessFn) {
+		double best = 0.0;
+		for (Individual<A> individual : population) {
+			if (fitnessFn.apply(individual) > best) {
+				best = fitnessFn.apply(individual);
+			}
+		}
+		return best;
+    }
+
 }
