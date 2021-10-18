@@ -427,6 +427,7 @@ public class NQueensDemo {
 		final int popSize = 50;
 		final double mutationProbability = 0.15;
 		final int numberOfGenerations = 100;
+		final double crossoverProbability = 0.8;
 		FitnessFunction<Integer> fitnessFunction = NQueensGenAlgoUtil.getFitnessFunction();
 		Predicate<Individual<Integer>> goalTest = NQueensGenAlgoUtil.getGoalTest();
 		// Generate an initial population
