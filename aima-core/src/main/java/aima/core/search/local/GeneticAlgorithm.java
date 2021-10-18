@@ -267,11 +267,12 @@ public class GeneticAlgorithm<A> {
 		// Default result is last individual
 		// (just to avoid problems with rounding errors)
 		Individual<A> selected = population.get(population.size() - 1);
-
+		double worst = worsFitness(population, fitnessFn);
 		// Determine all of the fitness values
 		double[] fValues = new double[population.size()];
 		for (int i = 0; i < population.size(); i++) {
-			fValues[i] = fitnessFn.apply(population.get(i));
+			fValues[i] = fitnessFn.apply(population.get(i)) - worst;
+			fValues[i] = Math.pow(fValues[i], 2);
 		}
 		// Normalize the fitness values
 		fValues = Util.normalize(fValues);
@@ -291,6 +292,15 @@ public class GeneticAlgorithm<A> {
 		return selected;
 	}
 
+	private double worsFitness(List<Individual<A>> population, FitnessFunction<A> fitnessFn) {
+		double worst = Double.MAX_VALUE;
+		for (Individual<A> pop : population) {
+			double value = fitnessFn.apply(pop);
+			worst = worst > value ? value : worst;
+		}
+		return worst;
+	}
+	
 	// function REPRODUCE(x, y) returns an individual
 	// inputs: x, y, parent individuals
 	protected Individual<A> reproduce(Individual<A> x, Individual<A> y) {
