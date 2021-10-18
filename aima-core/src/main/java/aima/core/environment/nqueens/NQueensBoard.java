@@ -149,6 +149,23 @@ public class NQueensBoard {
 		return getQueenPositions().stream().mapToInt(this::getNumberOfAttacksOn).sum() / 2;
 	}
 
+
+	public double probabilisticEstimation() {
+        return (getSize() - getNumberOfQueensOnBoard()) / getProbability();
+    }
+
+	private double getProbability() {
+		int nonAttacked = 0;
+		for (int row = 0; row < getSize(); row++) {
+			for (int col = 0; col < getSize(); col++) {
+				if (!isSquareUnderAttack(new XYLocation(row, col)))
+					nonAttacked++;
+			}
+		}
+
+		return ( nonAttacked / getSize() * (getSize() - getNumberOfQueensOnBoard()));
+	}
+   
 	public int getNumberOfAttackedQueens() {
 		List<XYLocation> queens = getQueenPositions();
 		int attacked = 0;

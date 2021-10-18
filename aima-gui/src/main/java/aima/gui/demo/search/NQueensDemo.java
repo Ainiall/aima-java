@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 
 public class NQueensDemo {
 
-	private static final int boardSize = 32; // 16, 24, 32
+	private static final int boardSize = 8; // 16, 24, 32
 
 	public static void main(String[] args) {
 		startNQueensDemo();
@@ -61,11 +61,13 @@ public class NQueensDemo {
 		*/
 
 		// ALIGNED QUEENS -1
-		solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
-		solveNQueensWithAStarSearchAttackedComplete1();
-		solveNQueensWithAStarSearchAttackedComplete2();
-		solveNQueensWithAStarSearchAttackedComplete3();
+		//solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
+		//solveNQueensWithAStarSearchAttackedComplete1();
+		//solveNQueensWithAStarSearchAttackedComplete2();
+		//solveNQueensWithAStarSearchAttackedComplete3();
 		
+		solveNQueensWithAStarSearchProbabilisticEstimation();
+
 
 		// solveNQueensWithAStarSearch4e();
 		// solveNQueensWithRecursiveDLS();
@@ -293,6 +295,20 @@ public class NQueensDemo {
 				Config.QUEENS_DIFF_ROW_COL);
 		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
 				NQueensFunctions::getMaximumNumberOfQueensAlignedMinusOne);
+		Optional<List<QueenAction>> actions = search.findActions(problem);
+
+		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
+		System.out.println(search.getMetrics());
+	}
+
+
+	
+	private static void solveNQueensWithAStarSearchProbabilisticEstimation() {
+		System.out.println("\n--- NQueensDemo A* (complete state formulation, graph search 3e) ---");
+
+		Problem<NQueensBoard, QueenAction> problem = NQueensFunctions.createIncrementalFormulationProblem(boardSize);
+		SearchForActions<NQueensBoard, QueenAction> search = new AStarSearch<>(new GraphSearch<>(),
+				NQueensFunctions::getHeuristicProbabilisticEstimationOfSolution);
 		Optional<List<QueenAction>> actions = search.findActions(problem);
 
 		actions.ifPresent(qActions -> qActions.forEach(System.out::println));
