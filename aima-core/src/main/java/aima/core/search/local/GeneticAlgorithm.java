@@ -244,7 +244,7 @@ public class GeneticAlgorithm<A> {
 			// y <- RANDOM-SELECTION(population, FITNESS-FN)
 			Individual<A> y = randomSelection(population, fitnessFn);
 			// child <- REPRODUCE(x, y)
-			Individual<A> child = reproduce(x, y);
+			Individual<A> child = reproduceOX(x, y);
 			// if (small random probability) then child <- MUTATE(child)
 			if (random.nextDouble() <= mutationProbability) {
 				child = mutate(child);
@@ -299,6 +299,24 @@ public class GeneticAlgorithm<A> {
 
 		return new Individual<A>(childRepresentation);
 	}
+
+    protected Individual<A> reproduceOX(Individual<A> x, Individual<A> y) {
+        // n <- LENGTH(x);
+        // Note: this is = this.individualLength
+        // c <- random number from 1 to n
+        int c = randomOffset(individualLength);
+        // return APPEND(SUBSTRING(x, 1, c) + y non repeated elements
+        List<A> childRepresentation = new ArrayList<A>();
+        childRepresentation.addAll(x.getRepresentation().subList(0, c));
+        for (int i = c; i < individualLength; i++) {
+            if (!childRepresentation.contains(y.getRepresentation().get(i))) {
+                childRepresentation.add(y.getRepresentation().get(i));
+            }
+        }
+
+        return new Individual<A>(childRepresentation);
+    }
+
 
 	protected Individual<A> mutate(Individual<A> child) {
 		int mutateOffset = randomOffset(individualLength);
