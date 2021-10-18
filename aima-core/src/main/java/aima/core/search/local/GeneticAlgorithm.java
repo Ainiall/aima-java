@@ -123,19 +123,21 @@ public class GeneticAlgorithm<A> {
 
 		// Create a local copy of the population to work with
 		List<Individual<A>> population = new ArrayList<>(initPopulation);
+		bestIndividual = retrieveBestIndividual(population, fitnessFn);
 		// Validate the population and setup the instrumentation
 		validatePopulation(population);
 		updateMetrics(population, 0, 0L);
 
 		long startTime = System.currentTimeMillis();
 
-		System.out.println("Average fitness: " + averageFitness(population, fitnessFn) + "\tBest fitness: "
-				+ bestFitness(population, fitnessFn));
-
 		// repeat
 		int itCount = 0;
+
+		System.out.println("\nGEN " + itCount + " Average fitness: " + averageFitness(population, fitnessFn)
+				+ "\tBest fitness: " + fitnessFn.apply(bestIndividual));
+
 		do {
-			population = nextGeneration(population, fitnessFn);
+			population = nextGeneration(population, fitnessFn, bestIndividual);
 			bestIndividual = retrieveBestIndividual(population, fitnessFn);
 
 			updateMetrics(population, ++itCount, System.currentTimeMillis() - startTime);
@@ -231,24 +233,31 @@ public class GeneticAlgorithm<A> {
 	 * Primitive operation which is responsible for creating the next generation.
 	 * Override to get progress information!
 	 */
-	protected List<Individual<A>> nextGeneration(List<Individual<A>> population, FitnessFunction<A> fitnessFn) {
+	protected List<Individual<A>> nextGeneration(List<Individual<A>> population, FitnessFunction<A> fitnessFn,
+			Individual<A> bestBefore) {
 		// new_population <- empty set
 		List<Individual<A>> newPopulation = new ArrayList<>(population.size());
 		// for i = 1 to SIZE(population) do
-		for (int i = 0; i < population.size(); i++) {
+		for (int i = 0; i < population.size() - 1; i++) {
 			// x <- RANDOM-SELECTION(population, FITNESS-FN)
+			Individual<A> child;
+			// y <- RANDOM-SELECTION(population, FITNESS-FN)
 			Individual<A> x = randomSelection(population, fitnessFn);
-			
 			if (random.nextDouble() <= crossoverProbability) {
 				Individual<A> y = randomSelection(population, fitnessFn);
-				Individual<A> child = reproduceOX(x, y);
-				
-				if (random.nextDouble() <= mutationProbability)
-					child = mutate(child);
-
-				newPopulation.add(child);
+				child = reproduce(x, y);
+			} else {
+				child = x;
 			}
+			// if (small random probability) then child <- MUTATE(child)
+			if (random.nextDouble() <= mutationProbability) {
+				child = mutate(child);
+			}
+			// add child to new_population
+			newPopulation.add(child);
 		}
+		newPopulation.add(bestBefore); // elitism
+
 		notifyProgressTrackers(getIterations(), population);
 		return newPopulation;
 	}
@@ -365,16 +374,6 @@ public class GeneticAlgorithm<A> {
 			totalFn += fitnessFn.apply(individual);
 		}
 		return totalFn / population.size();
-	}
-
-	private double bestFitness(List<Individual<A>> population, FitnessFunction<A> fitnessFn) {
-		double best = 0.0;
-		for (Individual<A> individual : population) {
-			if (fitnessFn.apply(individual) > best) {
-				best = fitnessFn.apply(individual);
-			}
-		}
-		return best;
 	}
 
 }
