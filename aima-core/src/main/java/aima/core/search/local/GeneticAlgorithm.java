@@ -308,25 +308,12 @@ public class GeneticAlgorithm<A> {
 		// Note: this is = this.individualLength
 		// c <- random number from 1 to n
 		int c = randomOffset(individualLength);
-		// return APPEND(SUBSTRING(x, 1, c), SUBSTRING(y, c+1, n))
-		List<A> childRepresentation = new ArrayList<A>();
-		childRepresentation.addAll(x.getRepresentation().subList(0, c));
-		childRepresentation.addAll(y.getRepresentation().subList(c, individualLength));
-
-		return new Individual<A>(childRepresentation);
-	}
-
-	protected Individual<A> reproduceOX(Individual<A> x, Individual<A> y) {
-		// n <- LENGTH(x);
-		// Note: this is = this.individualLength
-		// c <- random number from 1 to n
-		int c = randomOffset(individualLength);
 		// return APPEND(SUBSTRING(x, 1, c) + y non repeated elements
 		List<A> childRepresentation = new ArrayList<A>();
 		childRepresentation.addAll(x.getRepresentation().subList(0, c));
-		for (int i = c; i < individualLength; i++) {
-			if (!childRepresentation.contains(y.getRepresentation().get(i))) {
-				childRepresentation.add(y.getRepresentation().get(i));
+		for(A elem : y.getRepresentation()) { 
+			if (!childRepresentation.contains(elem)) {
+				childRepresentation.add(elem);
 			}
 		}
 
