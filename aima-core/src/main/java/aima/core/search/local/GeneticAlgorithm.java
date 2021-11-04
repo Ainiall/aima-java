@@ -321,15 +321,17 @@ public class GeneticAlgorithm<A> {
 	}
 
 	protected Individual<A> mutate(Individual<A> child) {
-		int mutateOffset = randomOffset(individualLength);
-		int alphaOffset = randomOffset(finiteAlphabet.size());
-
+		int mutatePosition1 = randomOffset(individualLength);
+		int mutatePosition2 = randomOffset(individualLength);
+		
 		List<A> mutatedRepresentation = new ArrayList<A>(child.getRepresentation());
 
-		mutatedRepresentation.set(mutateOffset, finiteAlphabet.get(alphaOffset));
+		A aux = mutatedRepresentation.get(mutatePosition1);
+		mutatedRepresentation.set(mutatePosition1, mutatedRepresentation.get(mutatePosition2));
+		mutatedRepresentation.set(mutatePosition2, aux);
 
 		return new Individual<A>(mutatedRepresentation);
-	}
+}
 
 	protected int randomOffset(int length) {
 		return random.nextInt(length);
