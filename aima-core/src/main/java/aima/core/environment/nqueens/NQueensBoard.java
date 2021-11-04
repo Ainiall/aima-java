@@ -177,6 +177,25 @@ public class NQueensBoard {
 		return attacked;
 	}
 
+
+	public int getMaxAllignedQueens2() {
+		List<XYLocation> queens = getQueenPositions();
+		int maxHorizontal = 0;
+		int maxVertical = 0;
+		int maxDiagonal = 0;
+		for (XYLocation queen : queens) {
+			if (isSquareUnderAttack(queen)) {
+				maxHorizontal= Math.max(maxHorizontal,
+						numberOfHorizontalAttacksOn(queen.getX(), queen.getY()));
+				maxVertical= Math.max(maxVertical,
+						numberOfVerticalAttacksOn(queen.getX(), queen.getY()));
+				maxDiagonal= Math.max(maxDiagonal,
+						numberOfDiagonalAttacksOn(queen.getX(), queen.getY()));
+			}
+		}
+		return Math.max(maxHorizontal, Math.max(maxVertical, maxDiagonal));
+	}
+
 	public int getMaxAllignedQueens() {
 		int maxRowQueens = getMaxHorizontalAllignedQueens();
 		int maxColQueens = getMaxVerticalAllignedQueens();

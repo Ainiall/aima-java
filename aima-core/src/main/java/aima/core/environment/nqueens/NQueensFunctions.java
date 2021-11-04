@@ -111,7 +111,8 @@ public class NQueensFunctions {
 
     public static double getMaximumNumberOfQueensAlignedMinusOne(Node<NQueensBoard, QueenAction> node) {
         // h(n) = X(n)-1, where X(n) it's max alligned queens in a row, col or diagonal
-        return node.getState().getMaxAllignedQueens() - 1;
+        //return node.getState().getMaxAllignedQueens() - 1;
+        return node.getState().getMaxAllignedQueens2();
     }
 
     public static double getHeuristicProbabilisticEstimationOfSolution(Node<NQueensBoard, QueenAction> node) {

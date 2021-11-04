@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 
 public class NQueensDemo {
 
-	private static final int boardSize = 8; // 16, 24, 32
+	private static final int boardSize = 16; // 16, 24, 32
 
 	public static void main(String[] args) {
 		startNQueensDemo();
@@ -38,14 +38,14 @@ public class NQueensDemo {
 	private static void startNQueensDemo() {
 		// solveNQueensWithDepthFirstSearch();
 		// solveNQueensWithBreadthFirstSearch();
-		
+
 		/*
 		solveNQueensWithAStarSearchNullHeuristicIncremental();
 		solveNQueensWithAStarSearchNullHeuristicComplete1();
 		solveNQueensWithAStarSearchNullHeuristicComplete2();
 		solveNQueensWithAStarSearchNullHeuristicComplete3();
 		*/
-		
+
 		/* ATTACKING PAIRS
 		solveNQueensWithAStarSearchIncremental(); // no need
 		solveNQueensWithAStarSearchComplete1();
@@ -62,14 +62,13 @@ public class NQueensDemo {
 
 		/* ALIGNED QUEENS -1
 		solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
-		solveNQueensWithAStarSearchAttackedComplete1();
-		solveNQueensWithAStarSearchAttackedComplete2();
-		solveNQueensWithAStarSearchAttackedComplete3();
+		solveNQueensWithAStarSearchMaxAllignedComplete1();
+		solveNQueensWithAStarSearchMaxAllignedComplete2();
+		solveNQueensWithAStarSearchMaxAllignedComplete3();
 		*/
 
 		// ESTIMATION
 		//solveNQueensWithAStarSearchProbabilisticEstimation();
-
 
 		// solveNQueensWithAStarSearch4e();
 		// solveNQueensWithRecursiveDLS();
@@ -383,7 +382,7 @@ public class NQueensDemo {
 		System.out.println("Final State:\n" + search.getLastState());
 	}
 
-	private static void solveNQueensWithGeneticAlgorithmSearch() {
+	/*private static void solveNQueensWithGeneticAlgorithmSearch() {
 		System.out.println("\n--- NQueensDemo GeneticAlgorithm ---");
 
 		FitnessFunction<Integer> fitnessFunction = NQueensGenAlgoUtil.getFitnessFunction();
@@ -421,6 +420,7 @@ public class NQueensDemo {
 		System.out.println("Itertions       = " + ga.getIterations());
 		System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
 	}
+	*/
 
 	private static void solveNQueensWithGeneticAlgorithmSearchNumberGenerations() {
 		System.out.println("\n--- NQueensDemo GeneticAlgorithm ---");
