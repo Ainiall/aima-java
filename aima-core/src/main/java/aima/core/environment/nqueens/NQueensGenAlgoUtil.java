@@ -15,8 +15,8 @@ import aima.core.util.datastructure.XYLocation;
  * A class whose purpose is to provide static utility methods for solving the
  * n-queens problem with genetic algorithms. This includes fitness function,
  * goal test, random creation of individuals and convenience methods for
- * translating between between an NQueensBoard representation and the Integer list
- * representation used by the GeneticAlgorithm.
+ * translating between between an NQueensBoard representation and the Integer
+ * list representation used by the GeneticAlgorithm.
  * 
  * @author Ciaran O'Reilly
  * @author Ruediger Lunde
@@ -27,12 +27,12 @@ public class NQueensGenAlgoUtil {
 	public static FitnessFunction<Integer> getFitnessFunction() {
 		return new NQueensFitnessFunction();
 	}
-	
+
 	public static Predicate<Individual<Integer>> getGoalTest() {
 		return new NQueensGenAlgoGoalTest();
 	}
-	
 
+	// non repeated
 	public static Individual<Integer> generateRandomIndividual(int boardSize) {
 		List<Integer> individualRepresentation = new ArrayList<>();
 		for (int i = 0; i < boardSize; i++) {
@@ -42,7 +42,6 @@ public class NQueensGenAlgoUtil {
 		return new Individual<>(individualRepresentation);
 	}
 
-	
 	public static Collection<Integer> getFiniteAlphabetForBoardOfSize(int size) {
 		Collection<Integer> fab = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public class NQueensGenAlgoUtil {
 
 		return fab;
 	}
-	
+
 	public static class NQueensFitnessFunction implements FitnessFunction<Integer> {
 
 		public double apply(Individual<Integer> individual) {
