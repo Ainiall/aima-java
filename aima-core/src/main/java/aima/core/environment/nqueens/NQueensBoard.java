@@ -149,10 +149,9 @@ public class NQueensBoard {
 		return getQueenPositions().stream().mapToInt(this::getNumberOfAttacksOn).sum() / 2;
 	}
 
-
 	public double probabilisticEstimation() {
-        return (getSize() - getNumberOfQueensOnBoard()) / getProbability();
-    }
+		return (getSize() - getNumberOfQueensOnBoard()) / getProbability();
+	}
 
 	private double getProbability() {
 		int nonAttacked = 0;
@@ -163,9 +162,9 @@ public class NQueensBoard {
 			}
 		}
 
-		return ( nonAttacked / getSize() * (getSize() - getNumberOfQueensOnBoard()));
+		return (nonAttacked / getSize() * (getSize() - getNumberOfQueensOnBoard()));
 	}
-   
+
 	public int getNumberOfAttackedQueens() {
 		List<XYLocation> queens = getQueenPositions();
 		int attacked = 0;
@@ -177,23 +176,25 @@ public class NQueensBoard {
 		return attacked;
 	}
 
-
 	public int getMaxAllignedQueens2() {
 		List<XYLocation> queens = getQueenPositions();
 		int maxHorizontal = 0;
 		int maxVertical = 0;
-		int maxDiagonal = 0;
+		int maxDiagonalDtU = 0;
+		int maxDiagonalUtD = 0;
+
 		for (XYLocation queen : queens) {
 			if (isSquareUnderAttack(queen)) {
-				maxHorizontal= Math.max(maxHorizontal,
-						numberOfHorizontalAttacksOn(queen.getX(), queen.getY()));
-				maxVertical= Math.max(maxVertical,
-						numberOfVerticalAttacksOn(queen.getX(), queen.getY()));
-				maxDiagonal= Math.max(maxDiagonal,
-						numberOfDiagonalAttacksOn(queen.getX(), queen.getY()));
+				maxHorizontal = Math.max(maxHorizontal, numberOfHorizontalAttacksOn(queen.getX(), queen.getY()));
+				maxVertical = Math.max(maxVertical, numberOfVerticalAttacksOn(queen.getX(), queen.getY()));
+				maxDiagonalDtU = numberOfDiagDtUAttacksOn(queen.getX(), queen.getY());
+				maxDiagonalUtD = numberOfDiagUtDAttacksOn(queen.getX(), queen.getY());
 			}
 		}
-		return Math.max(maxHorizontal, Math.max(maxVertical, maxDiagonal));
+
+		maxHorizontal--;
+		maxVertical--;
+		return Math.max(Math.max(maxDiagonalDtU, maxDiagonalUtD), Math.max(maxVertical, maxHorizontal));
 	}
 
 	public int getMaxAllignedQueens() {
@@ -244,7 +245,7 @@ public class NQueensBoard {
 			}
 		}
 
-		int maxDiagonalQueens = 0;	
+		int maxDiagonalQueens = 0;
 		for (int col = 0; col < getSize(); col++) {
 			int diagonalCount = 0;
 			for (int diagonal = 0; diagonal < getSize(); diagonal++) {
@@ -254,7 +255,7 @@ public class NQueensBoard {
 			}
 			maxDiagonalQueens = Math.max(maxDiagonalQueens, diagonalCount);
 		}
-		
+
 		return maxDiagonalQueens;
 	}
 
@@ -329,6 +330,42 @@ public class NQueensBoard {
 
 		return result;
 	}
+	
+	private int numberOfDiagDtUAttacksOn(int x, int y) { 
+		int result = 0; 
+		int col; 
+		int row; 
+		// forward up diagonal 
+		for (col = (x + 1), row = (y - 1); (col < getSize() && (row > -1)); col++, row--) 
+		 if (queenExistsAt(col, row)) 
+		  result++; 
+	   
+		// backward down diagonal 
+		for (col = (x - 1), row = (y + 1); ((col > -1) && (row < getSize())); col--, row++) 
+		 if (queenExistsAt(col, row)) 
+		  result++; 
+	   
+	   
+		return result; 
+	   } 
+		
+	   private int numberOfDiagUtDAttacksOn(int x, int y) { 
+		int result = 0; 
+		int col; 
+		int row; 
+		// forward down diagonal 
+		for (col = (x + 1), row = (y + 1); ((col < getSize()) && (row < getSize())); col++, row++) 
+		 if (queenExistsAt(col, row)) 
+		  result++; 
+	   
+		// backward up diagonal 
+		for (col = (x - 1), row = (y - 1); ((col > -1) && (row > -1)); col--, row--) 
+		 if (queenExistsAt(col, row)) 
+		  result++; 
+	   
+	   
+		return result; 
+	   }
 
 	@Override
 	public int hashCode() {
