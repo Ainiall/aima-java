@@ -133,12 +133,13 @@ public class GeneticAlgorithm<A> {
 		// repeat
 		int itCount = 0;
 
-		System.out.println("\nGEN " + itCount + " Average fitness: " + averageFitness(population, fitnessFn)
-				+ "\tBest fitness: " + fitnessFn.apply(bestIndividual));
-
+		
 		do {
 			population = nextGeneration(population, fitnessFn, bestIndividual);
 			bestIndividual = retrieveBestIndividual(population, fitnessFn);
+			
+			System.out.println("\nGEN " + itCount + " Average fitness: " + averageFitness(population, fitnessFn)
+				+ "\tBest fitness: " + fitnessFn.apply(bestIndividual));
 
 			updateMetrics(population, ++itCount, System.currentTimeMillis() - startTime);
 

@@ -58,43 +58,14 @@ public class NQueensGenAlgoUtil {
 			double fitness = 0;
 
 			NQueensBoard board = getBoardForIndividual(individual);
-			int boardSize = board.getSize();
-
-			// Calculate the number of non-attacking pairs of queens (refer to
-			// AIMA
-			// page 117).
-			List<XYLocation> qPositions = board.getQueenPositions();
-			for (int fromX = 0; fromX < (boardSize - 1); fromX++) {
-				for (int toX = fromX + 1; toX < boardSize; toX++) {
-					int fromY = qPositions.get(fromX).getY();
-					boolean nonAttackingPair = true;
-					// Check right beside
-					int toY = fromY;
-					if (board.queenExistsAt(new XYLocation(toX, toY))) {
-						nonAttackingPair = false;
-					}
-					// Check right and above
-					toY = fromY - (toX - fromX);
-					if (toY >= 0) {
-						if (board.queenExistsAt(new XYLocation(toX, toY))) {
-							nonAttackingPair = false;
-						}
-					}
-					// Check right and below
-					toY = fromY + (toX - fromX);
-					if (toY < boardSize) {
-						if (board.queenExistsAt(new XYLocation(toX, toY))) {
-							nonAttackingPair = false;
-						}
-					}
-
-					if (nonAttackingPair) {
-						fitness += 1.0;
-					}
+			
+			for (XYLocation queen : board.getQueenPositions()) {
+				if (board.getNumberOfAttacksOn(queen) == 0) {
+					fitness++;
 				}
 			}
-
 			return fitness;
+			
 		}
 	}
 

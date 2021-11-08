@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 
 public class NQueensDemo {
 
-	private static final int boardSize = 16; // 16, 24, 32
+	private static final int boardSize = 8; // 16, 24, 32
 
 	public static void main(String[] args) {
 		startNQueensDemo();
@@ -46,6 +46,7 @@ public class NQueensDemo {
 		solveNQueensWithAStarSearchNullHeuristicComplete3();
 		*/
 
+
 		/* ATTACKING PAIRS
 		solveNQueensWithAStarSearchIncremental(); // no need
 		solveNQueensWithAStarSearchComplete1();
@@ -61,7 +62,7 @@ public class NQueensDemo {
 		*/
 
 		/* ALIGNED QUEENS -1
-		solveNQueensWithAStarSearchMaxAlignedIncremental();// no need
+		solveNQueensWithAStarSearchMaxAllignedIncremental();// no need
 		solveNQueensWithAStarSearchMaxAllignedComplete1();
 		solveNQueensWithAStarSearchMaxAllignedComplete2();
 		solveNQueensWithAStarSearchMaxAllignedComplete3();
@@ -78,7 +79,8 @@ public class NQueensDemo {
 		//solveNQueensWithGeneticAlgorithmSearch();
 		// solveNQueensWithRandomWalk();
 
-		solveNQueensWithGeneticAlgorithmSearchNumberGenerations();
+		//solveNQueensWithGeneticAlgorithmSearchNumberGenerations();
+		solveNQueensWithGeneticAlgorithmSearch();
 	}
 
 	private static void solveNQueensWithDepthFirstSearch() {
@@ -436,7 +438,8 @@ public class NQueensDemo {
 			population.add(NQueensGenAlgoUtil.generateRandomIndividual(boardSize));
 
 		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(boardSize,
-				NQueensGenAlgoUtil.getFiniteAlphabetForBoardOfSize(boardSize), mutationProbability, crossoverProbability);
+				NQueensGenAlgoUtil.getFiniteAlphabetForBoardOfSize(boardSize), mutationProbability,
+				crossoverProbability);
 
 		Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, numberOfGenerations);
 
@@ -454,6 +457,39 @@ public class NQueensDemo {
 		System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
 	}
 	
+	private static void solveNQueensWithGeneticAlgorithmSearch() {
+
+		final int popSize = 50;
+		final double mutationProbability = 0.15;
+		final int numberOfGenerations = 100;
+		final double crossoverProbability = 0.8;
+
+		System.out.println("\n--- NQueensDemo GeneticAlgorithm ---");
+
+		FitnessFunction<Integer> fitnessFunction = NQueensGenAlgoUtil.getFitnessFunction();
+		Predicate<Individual<Integer>> goalTest = NQueensGenAlgoUtil.getGoalTest();
+		// Generate an initial population 
+		Set<Individual<Integer>> population = new HashSet<>();
+		for (int i = 0; i < popSize; i++)
+			population.add(NQueensGenAlgoUtil.generateRandomIndividual(boardSize));
+
+		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(boardSize,
+				NQueensGenAlgoUtil.getFiniteAlphabetForBoardOfSize(boardSize), mutationProbability,
+				crossoverProbability);
+
+		// Run for a set amount of time 
+		Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, numberOfGenerations);
+		System.out.println(
+				"Max time 1 second, Best Individual:\n" + NQueensGenAlgoUtil.getBoardForIndividual(bestIndividual));
+		System.out.println("Board Size      = " + boardSize);
+		System.out.println("# Board Layouts = " + (new BigDecimal(boardSize)).pow(boardSize));
+		System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
+		System.out.println("Is Goal         = " + goalTest.test(bestIndividual));
+		System.out.println("Population Size = " + ga.getPopulationSize());
+		System.out.println("Iterations      = " + ga.getIterations());
+		System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+	}
+	   
 	// Here, this trivial algorithm outperforms the genetic search approach as described in the textbook!
 	private static void solveNQueensWithRandomWalk() {
 		System.out.println("\n--- NQueensDemo RandomWalk ---");

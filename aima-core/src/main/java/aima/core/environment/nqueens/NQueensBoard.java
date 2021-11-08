@@ -170,7 +170,7 @@ public class NQueensBoard {
 		int attacked = 0;
 		for (XYLocation queen : queens) {
 			if (isSquareUnderAttack(queen)) {
-				attacked += 1;
+				attacked ++;
 			}
 		}
 		return attacked;
